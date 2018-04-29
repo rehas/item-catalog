@@ -5,9 +5,9 @@ ItemCatalogApp
 +2-Initialize git repo
 
 3-Phase 1
-	-Write down functionality
-	-Route each function
-	-create the server
+	+-Write down functionality
+	HERE>-Route each function
+	+-create the server
 	-create db infrastructure
 	-create template rendering infrastructure
 	-Create a bootstrap boilerplate
@@ -15,7 +15,7 @@ ItemCatalogApp
 
 
 	PROJECT FUNCTIONALITY & PHASE 1 ROUTES
-		1-host on port 8000
+		+1-host on port 8000
 		2-'/' AND '/catalog'
 			-'GET'    : Display all categories and latest 10 items
 			**Optional ==

@@ -7,7 +7,38 @@ ItemCatalogApp
 3-Phase 1
 	-Write down functionality
 	-Route each function
+	-create the server
+	-create db infrastructure
+	-create template rendering infrastructure
 	-Create a bootstrap boilerplate
 	-Create and render simple page for each function
-	
+
+
+	PROJECT FUNCTIONALITY & PHASE 1 ROUTES
+		1-host on port 8000
+		2-'/' AND '/catalog'
+			-'GET'    : Display all categories and latest 10 items
+			**Optional ==
+				-'POST' : Creates a new category : Login Required
+			
+		3-'/catalog/<string:category_name>/items'
+			-'GET'    : Displays all items under that category alphabetically ordered
+			-'POST'   : Creates a new item for that category : Login Required
+			
+		4-'/catalog/<string:category_name>/<string:item_name>'
+			-'GET'    : Displays specific information about an item
+				-(access from URL) Check wheter that item belongs to that category, 
+					if not proceed to adding item to that category
+			-'PUT'    : Edits the specific Item : Login Required
+			-'DELETE' : Deletes the specific item : Login Required
+		5-'/login/<string:provider>'
+			-'POST'   : Allows login with a oAuth provider given (Facebook / Google)
+		6-'/logout/<string:provider>'
+			-''       : Allows logout from oauth provider given
+		
+
+
+
+------------------------------------------------------------	
 4-Phase 2
+	-Token based authentication

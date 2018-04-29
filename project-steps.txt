@@ -1,7 +1,8 @@
 ItemCatalogApp
 
-1-Create directory in C:\Users\wrkply\Documents\UFSND\Part3- Backend DBs Apps\FSND-Virtual-Machine\vagrant
-2-Initialize git repo
++1-Create directory in: 
+	~\Documents\UFSND\Part3- Backend DBs Apps\FSND-Virtual-Machine\vagrant
++2-Initialize git repo
 
 3-Phase 1
 	-Write down functionality

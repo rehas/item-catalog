@@ -2,14 +2,31 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Item Catalog</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <link rel="stylesheet" href="/static/main.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Item Catalog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
 </head>
 
-<body>
-    <button class ="btn btn-danger">index page</button> 
+<body class="container-fluid">
+    <header class="navbar d-flex flex-row">
+        <h2 class="nav nav-justified"> Welcome to Item Catalog </h2>
+        <button class="btn btn-danger float-right">Login</button>
+    </header>
+    <div class="row">
+        <div class="col">
+            Categories {% for c in categories%}
+            <h4>{{c.name}}</h4>
+            {% endfor %}
+        </div>
+        <div class="col">
+            Latest Items 
+            {% for li in latest_items%}
+            <h4>{{li.name}} - {{li.last_edit}} -- {{li.category.name}}</h4>
+            {% endfor %}
+        </div>
+    </div>
 </body>

@@ -10,6 +10,36 @@
   <link rel="stylesheet" href="/static/main.css">
 </head>
 
-<body>
-    <button class ="btn btn-danger">Item Detail for category {{ category}} Item {{item}}</button> 
+<body class="container-fluid">
+        <header class="navbar d-flex flex-row">
+            <h2 class="nav nav-justified"> Displaying Item Detail for {{item}} </h2>
+            <button class="btn btn-danger float-right">Login</button>
+        </header>
+        <div class="row">
+            <div class = "col"> 
+                Categories
+                Categories 
+            {% for c in categories%}
+            {% if category_name == c. name%}
+            <h2>{{c.name}}</h2>
+            {% else %}
+            <h4>{{c.name}}</h4>
+            {% endif %}
+            {% endfor %}
+            </div>
+            <div class = "col"> 
+                Items for category {{category}}
+            {% for ci in category_items%}
+            {% if item_name == ci.name%}
+            <h2>{{ci.name}} - {{ci.last_edit}}</h2>
+            {% else%}
+            <h4>{{ci.name}} - {{ci.last_edit}}</h4>
+            {% endif %}
+            {% endfor %}
+            </div>
+            <div class = "col"> 
+                Item details for {{item_name}}
+                {{selected_item.description}}
+            </div>
+        </div>
 </body>

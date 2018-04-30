@@ -6,9 +6,9 @@ ItemCatalogApp
 
 3-Phase 1
 	+-Write down functionality
-	HERE>-Route each function
+	+-Route each function
 	+-create the server
-	-create db infrastructure
+	HERE>-create db infrastructure
 	-create template rendering infrastructure
 	-Create a bootstrap boilerplate
 	-Create and render simple page for each function
@@ -32,6 +32,7 @@ ItemCatalogApp
 			-'PUT'    : Edits the specific Item : Login Required
 			-'DELETE' : Deletes the specific item : Login Required
 		5-'/login/<string:provider>'
+			-'GET'    : Shows login button for selected provider
 			-'POST'   : Allows login with a oAuth provider given (Facebook / Google)
 		6-'/logout/<string:provider>'
 			-''       : Allows logout from oauth provider given

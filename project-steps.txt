@@ -20,10 +20,12 @@ ItemCatalogApp
 		-main page, includes categories and latest
 		-category items page includes categories and items belonging to that category
 		-single item page includes description of an item
-	HERE>-Implement Post methods and forms:
+	+-Implement Post methods and forms:
 		-main page, add category
 		-category items page : add items
 		-single item page, edit, delete item
+			*Optional => make user edit category by dropdown list
+	HERE>-Make categories and items clickable
 	PROJECT FUNCTIONALITY & PHASE 1 ROUTES
 		+1-host on port 8000
 		2-'/' AND '/catalog'

@@ -9,10 +9,10 @@ ItemCatalogApp
 	+-Route each function
 	+-create the server
 	+-create db infrastructure & populate
-	HERE>-create template rendering infrastructure
-	-Create a bootstrap boilerplate
-	-Create and render simple page for each function
-
+	+-create template rendering infrastructure
+	+-Create a bootstrap boilerplate
+	+-Create and render simple page for each function
+	HERE>-Design page structures for each page with bootstrap
 
 	PROJECT FUNCTIONALITY & PHASE 1 ROUTES
 		+1-host on port 8000

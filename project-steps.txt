@@ -25,7 +25,7 @@ ItemCatalogApp
 		-category items page : add items
 		-single item page, edit, delete item
 			*Optional => make user edit category by dropdown list
-	HERE>-Make categories and items clickable
+	+-Make categories and items clickable
 	PROJECT FUNCTIONALITY & PHASE 1 ROUTES
 		+1-host on port 8000
 		2-'/' AND '/catalog'
@@ -54,12 +54,17 @@ ItemCatalogApp
 
 ------------------------------------------------------------	
 4-Phase 2
-	-Login via providers
+	HERE>-Login via providers
 	-Token based authentication
 	-JSON endpoints
 
 ------------------------------------------------------------
+5-Phase 3
+	-Beautify css & html
+	-Refactor serverside, with comments
+	-pypchecker
 
+------------------------------------------------------------	
 DB model
 
 Category:

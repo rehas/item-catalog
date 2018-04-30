@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, url_for, redirect
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/catalog', methods = ['GET', 'POST'])
 def catalog():
     if request.method == 'GET':
-        return "You have reached the main page my friendss"
+        return render_template('index.html')
     if request.method == 'POST':
         return
 
@@ -15,7 +15,7 @@ def catalog():
 @app.route('/catalog/<string:category_name>/items', methods = ['GET', 'POST'])
 def categoryItems(category_name):
     if request.method == 'GET':
-        return "You're now seeing items for category named: %s" % category_name
+        return render_template('category-items.html', category = category_name)
     if request.method == 'POST':
         return "You're now adding items for category named: %s" % category_name
 
@@ -23,7 +23,7 @@ def categoryItems(category_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>', methods = ['GET', 'PUT', 'DELETE'])
 def singleItem(category_name, item_name):
     if request.method == 'GET':
-        return "You want to access information about item : %s of category %s" % (item_name, category_name)        
+        return render_template('item-detail.html', category = category_name, item = item_name)        
     if request.method == 'PUT':
         return "You want to edit information of item : %s of category %s" % (item_name, category_name)        
     if request.method == 'DELETE':

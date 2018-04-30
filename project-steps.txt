@@ -12,8 +12,18 @@ ItemCatalogApp
 	+-create template rendering infrastructure
 	+-Create a bootstrap boilerplate
 	+-Create and render simple page for each function
-	HERE>-Design page structures for each page with bootstrap
-
+	+-Design page structures for each page with bootstrap
+		-main page, includes categories and latest
+		-category items page includes categories and items belonging to that category
+		-single item page includes description of an item
+	+-Make pages display actual data from database
+		-main page, includes categories and latest
+		-category items page includes categories and items belonging to that category
+		-single item page includes description of an item
+	HERE>-Implement Post methods and forms:
+		-main page, add category
+		-category items page : add items
+		-single item page, edit, delete item
 	PROJECT FUNCTIONALITY & PHASE 1 ROUTES
 		+1-host on port 8000
 		2-'/' AND '/catalog'
@@ -57,6 +67,7 @@ Category:
 item : 
 	id: int -> PK
 	name : string ->
+	*TODO* add description : string
 	category_id : Category.id => FK
 	created_at : dateTime
 	created_by : User.id

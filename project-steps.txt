@@ -8,8 +8,8 @@ ItemCatalogApp
 	+-Write down functionality
 	+-Route each function
 	+-create the server
-	HERE>-create db infrastructure
-	-create template rendering infrastructure
+	+-create db infrastructure & populate
+	HERE>-create template rendering infrastructure
 	-Create a bootstrap boilerplate
 	-Create and render simple page for each function
 
@@ -42,4 +42,27 @@ ItemCatalogApp
 
 ------------------------------------------------------------	
 4-Phase 2
+	-Login via providers
 	-Token based authentication
+	-JSON endpoints
+
+------------------------------------------------------------
+
+DB model
+
+Category:
+	id : int -> PK
+	name : string -> unique
+
+item : 
+	id: int -> PK
+	name : string ->
+	category_id : Category.id => FK
+	created_at : dateTime
+	created_by : User.id
+
+User:
+	id : int ->PK
+	name : String 
+	email : string -> unique
+	picture : string 

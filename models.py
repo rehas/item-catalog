@@ -24,9 +24,12 @@ class Item(Base):
 
     id = Column(Integer, primary_key = True)
     name = Column(String(100), unique = True)
+    description = Column(String, nullable = False)
     last_edit = Column(DateTime, nullable = True)
     created_by = Column(Integer, ForeignKey('user.id'))
     category_id = Column(Integer, ForeignKey('category.id'))
+    user = relationship(User)
+    category = relationship(Category)
 
 engine = create_engine('sqlite:///itemCatalog.db')
 

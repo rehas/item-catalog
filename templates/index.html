@@ -29,4 +29,13 @@
             {% endfor %}
         </div>
     </div>
+    <div class = "row">
+        <form class="form-inline" action='{{url_for('catalog')}}' method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="categoryName">Add New Category</label>
+                <input type="text" id="categoryName" placeholder="Enter New Category Name" name="newCategoryName">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Category!</button>
+        </form>
+    </div>
 </body>

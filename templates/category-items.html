@@ -13,7 +13,7 @@
 
 <body class="container-fluid">
     <header class="navbar d-flex flex-row">
-        <h2 class="nav nav-justified"> Displaying Category {{category}} </h2>
+        <h2 class="nav nav-justified"> Displaying Category {{category_name}} </h2>
         <button class="btn btn-danger float-right">Login</button>
     </header>
     <div class="row">
@@ -35,4 +35,15 @@
         
         </div>
     </div>
+    <div class = "row">
+            <form class="form" action='{{url_for('categoryItems', category_name = category_name)}}' method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="itemName">Add New Item</label>
+                    <input type="text" id="itemName" placeholder="Enter New Item Name" name="newItemName">
+                    <label for="itemDescription">Enter Description</label>
+                    <input type="text" id="itemDescription" placeholder="Enter Item Description" name="newItemDescription">
+                </div>
+                <button type="submit" class="btn btn-primary">Add New Item!</button>
+            </form>
+        </div>
 </body>

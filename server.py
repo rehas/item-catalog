@@ -22,7 +22,11 @@ def catalog():
         latest_items = session.query(Item).order_by(Item.id.desc()).limit(2)
         return render_template('index.html', categories = categories, latest_items = latest_items)
     if request.method == 'POST':
-        return
+        newCategory = Category(name = request.form['newCategoryName'])
+        session.add(newCategory)
+        session.commit()
+        return redirect(url_for('catalog'))
+
 
 
 @app.route('/catalog/<string:category_name>/items', methods = ['GET', 'POST'])
@@ -33,10 +37,19 @@ def categoryItems(category_name):
         category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()        
         return render_template('category-items.html', categories = categories, category_name = category_name, category_items = category_items)
     if request.method == 'POST':
-        return "You're now adding items for category named: %s" % category_name
+        category_id_for_item = session.query(Category).filter_by(name = category_name).first().id
+        newItem = Item(name = request.form['newItemName'],
+        description = request.form['newItemDescription'])
+        newItem.category_id = category_id_for_item
+        newItem.created_by = 1 # TODO : make it the actual signed in user
+        newItem.last_edit = datetime.now()
+        session.add(newItem)
+        session.commit()
+
+        return redirect(url_for('categoryItems', category_name = category_name))
 
 
-@app.route('/catalog/<string:category_name>/<string:item_name>', methods = ['GET', 'PUT', 'DELETE'])
+@app.route('/catalog/<string:category_name>/<string:item_name>', methods = ['GET', 'POST'])
 def singleItem(category_name, item_name):
     if request.method == 'GET':
         categories = session.query(Category).all()
@@ -44,10 +57,24 @@ def singleItem(category_name, item_name):
         category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()
         selected_item = session.query(Item).filter_by(name = item_name).first()
         return render_template('item-detail.html', categories = categories, category_name = category_name, category_items = category_items, item_name = item_name, selected_item = selected_item)        
-    if request.method == 'PUT':
-        return "You want to edit information of item : %s of category %s" % (item_name, category_name)        
-    if request.method == 'DELETE':
-        return "You want to delete information of item : %s of category %s" % (item_name, category_name)        
+    if request.method == 'POST':
+        selected_category_id = session.query(Category).filter_by(name = category_name).first().id
+        editItem = session.query(Item).filter_by(category_id = selected_category_id).filter_by(name = item_name).first()
+        editItem.name = request.form['editItemName']
+        editItem.description = request.form['editItemDescription']
+        session.add(editItem)
+        session.commit()
+        return redirect(url_for('categoryItems', category_name = category_name))
+    
+@app.route('/catalog/<string:category_name>/<string:item_name>/delete', methods = ['POST'])
+def deleteSingleItem(category_name, item_name):
+    if request.method == 'GET':
+        return # Todo => redirect to somehwere logical
+    if request.method == 'POST':
+        deleteItem = session.query(Item).filter_by(name = item_name).first()
+        session.delete(deleteItem)
+        session.commit()
+        return redirect(url_for('categoryItems', category_name = category_name))
 
 
 @app.route('/login/<string:provider>', methods = ['GET', 'POST'])

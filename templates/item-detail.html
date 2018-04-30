@@ -12,7 +12,7 @@
 
 <body class="container-fluid">
         <header class="navbar d-flex flex-row">
-            <h2 class="nav nav-justified"> Displaying Item Detail for {{item}} </h2>
+            <h2 class="nav nav-justified"> Displaying Item Detail for {{item_name}} </h2>
             <button class="btn btn-danger float-right">Login</button>
         </header>
         <div class="row">
@@ -41,5 +41,22 @@
                 Item details for {{item_name}}
                 {{selected_item.description}}
             </div>
+        </div>
+        <div class = "row">
+                <form class="form" action='{{url_for('singleItem', category_name = category_name, item_name = selected_item.name)}}' method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="itemName">Edit Item</label>
+                        <input type="text" id="itemName" placeholder="Enter New Item Name for {{selected_item.name}}" name="editItemName">
+                        <label for="itemDescription">Edit Description</label>
+                        <input type="text" id="itemDescription" placeholder="Enter New Item Description for {{selected_item.description}}" name="editItemDescription">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit this Item!</button>
+                </form>
+            </div>
+        <div class="row">
+            <form action='{{url_for('deleteSingleItem', category_name = category_name,  item_name = selected_item.name )}}' method="POST">
+                <label for="deleteItem">You want to delete item : {{selected_item.name}} ?</label>
+                <button type="submit" class="btn btn-danger"> DELETE ITEM {{selected_item.name}}</button>
+            </form>
         </div>
 </body>

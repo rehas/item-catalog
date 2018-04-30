@@ -16,30 +16,47 @@
             <button class="btn btn-danger float-right">Login</button>
         </header>
         <div class="row">
-            <div class = "col"> 
-                Categories
-                Categories 
+            <div class = "col-md-4"> 
+                <h2>Categories</h2>
+                 
             {% for c in categories%}
+            <div class="row">
             {% if category_name == c. name%}
-            <h2>{{c.name}}</h2>
-            {% else %}
-            <h4>{{c.name}}</h4>
-            {% endif %}
-            {% endfor %}
-            </div>
-            <div class = "col"> 
-                Items for category {{category}}
-            {% for ci in category_items%}
-            {% if item_name == ci.name%}
-            <h2>{{ci.name}} - {{ci.last_edit}}</h2>
+            <a href='{{url_for('categoryItems', category_name = c.name)}}' 
+                    class="btn btn-primary" >
+                <h2 class="col">{{c.name}}</h2>
+            </a>
             {% else%}
-            <h4>{{ci.name}} - {{ci.last_edit}}</h4>
+            <a href='{{url_for('categoryItems', category_name = c.name)}}' 
+                    class="btn btn-default" >
+            <h4 class="col">{{c.name}}</h4>
+            </a>
             {% endif %}
+            </div>
             {% endfor %}
             </div>
-            <div class = "col"> 
-                Item details for {{item_name}}
-                {{selected_item.description}}
+            <div class = "col-md-4"> 
+                <h2>Items for category {{category_name}}</h2>
+            {% for ci in category_items%}
+            <div class="row">
+                {% if item_name == ci.name%}
+                <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
+                class="btn btn-primary">
+                    <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
+                 </a>
+                {% else%}
+                <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
+                class="btn btn-default">
+                    <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
+                 </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+            </div>
+            <div class = "col-md-4"> 
+                <h2>Item details for {{item_name}}</h2>
+                <hr>
+                <h3>{{selected_item.description}}</h3>
             </div>
         </div>
         <div class = "row">

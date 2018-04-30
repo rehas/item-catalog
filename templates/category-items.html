@@ -17,20 +17,33 @@
         <button class="btn btn-danger float-right">Login</button>
     </header>
     <div class="row">
-        <div class="col">
-            Categories 
+        <div class="col-md-4">
+            <h2>Categories</h2> 
             {% for c in categories%}
+            <div class="row">
             {% if category_name == c. name%}
-            <h2>{{c.name}}</h2>
+            <a href='{{url_for('categoryItems', category_name = c.name)}}' 
+                    class="btn btn-primary" >
+                <h2 class="col">{{c.name}}</h2>
+            </a>
             {% else%}
-            <h4>{{c.name}}</h4>
+            <a href='{{url_for('categoryItems', category_name = c.name)}}' 
+                    class="btn btn-default" >
+            <h4 class="col">{{c.name}}</h4>
+            </a>
             {% endif%}
+            </div>
             {% endfor %}
         </div>
-        <div class="col"> 
-            Items for category {{category}}
+        <div class="col-md-4"> 
+            <h2>Items for category {{category_name}}</h2>
             {% for ci in category_items%}
-            <h4>{{ci.name}} - {{ci.last_edit}}</h4>
+            <div class="row">
+                <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
+                class="btn btn-default">
+                    <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
+                 </a>
+            </div>
             {% endfor %}
         
         </div>

@@ -6,6 +6,8 @@ from models import User, Item, Category, Base
 
 from datetime import datetime
 
+import oauthbridge
+
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///itemCatalog.db')
@@ -19,8 +21,8 @@ session  = DBSession()
 def catalog():
     if request.method == 'GET':
         categories = session.query(Category).all()
-        latest_items = session.query(Item).order_by(Item.id.desc()).limit(2)
-        return render_template('index.html', categories = categories, latest_items = latest_items)
+        latest_items = session.query(Item).order_by(Item.id.desc()).limit(5)
+        return render_template('index.html', categories = categories, latest_items = latest_items, user = request.args.get('user'))
     if request.method == 'POST':
         newCategory = Category(name = request.form['newCategoryName'])
         session.add(newCategory)
@@ -80,10 +82,16 @@ def deleteSingleItem(category_name, item_name):
 @app.route('/login/<string:provider>', methods = ['GET', 'POST'])
 def login(provider):
     if request.method == 'GET':
-        return "You're seeing login page for all providers"
+        oauthbridge.testBridge(provider, request)
+        state  = oauthbridge.showLogin()
+        return render_template('login.html', STATE = state)
     if request.method == 'POST':
         if provider == 'google':
-            return "you're trying to login with %s" % provider
+            login_session =  oauthbridge.gConnect(request)
+            print("here in login/google/post")
+            print(login_session)
+            # return "you're trying to login with %s" % provider
+            return redirect( url_for( 'catalog', user = login_session['username']))
         if provider == 'facebook':
             return "you're trying to login with %s" % provider
 
@@ -91,8 +99,12 @@ def login(provider):
 @app.route('/logout/<string:provider>', methods = ['GET', 'POST'])
 def logout(provider):
     return "you're logging out from %s" % provider            
+
+
 if __name__ == '__main__':
     app.debug = True
+    app.secret_key = 'super_secret_key'
+    
     app.run(host = '0.0.0.0', port = 8000)
 
 

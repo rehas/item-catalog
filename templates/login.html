@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Item Catalog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+
+    <!--Google Login Script Imports /-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="//apis.google.com/js/platform.js?onload=start" async defer></script>
+    <!--END OF Google Login Script Imports /-->
+</head>
+<body>
+    <div class="container">
+        <div id="googleSignInButton">
+            <span class="g-signin"
+                  data-scope = "openid email"
+                  data-clientid = "350522903196-flcfegg0ejpjqjc27mmr3jtm8u2hu0d7.apps.googleusercontent.com"
+                  data-redirecturi = "postmessage"
+                  data-accestype = "offline"
+                  data-cookiepolicy = "single_host_origin"
+                  data-callback = "googleSignInCallback"
+                  data-approvalprompt="force"> 
+            </span>
+        </div>
+        <div id="result">
+        </div>
+    </div>
+
+    <script>
+        function googleSignInCallback (authResult) {
+            if (authResult['code']) {
+                $('#googleSignInButton').attr('style', 'display:none') ;
+            }
+            $.ajax({
+                type: 'POST',
+                url : '/login/google?state={{STATE}}',
+                processData : false,
+                contentType : 'application/octet-stream; charset=utf-8',
+                data : authResult['code'],
+                success : function(result){
+                    if (result) {
+                        $('#result').html('Login Succesful</br>' + result + '</br> Redirecting..')
+                        setTimeout(function(){
+                            window.location.href = '/catalog';
+                        }, 2500);
+                    } else if (authResult['error']){
+                        console.log("There was an error : " + authResult['error']);
+                    } else {
+                        $('#result').html('Failed to make a serverside call. Check config and console');
+                    }
+                }
+
+            });
+        };
+    </script>
+</body>

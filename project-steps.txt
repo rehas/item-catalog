@@ -54,7 +54,11 @@ ItemCatalogApp
 
 ------------------------------------------------------------	
 4-Phase 2
-	HERE>-Login via providers
+	-Login via providers
+		-Google
+			+-Get google authentication
+			HERE>-Get user data and store it in DB, make user available through Session
+		-Facebook
 	-Token based authentication
 	-JSON endpoints
 

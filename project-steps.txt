@@ -57,8 +57,15 @@ ItemCatalogApp
 	-Login via providers
 		-Google
 			+-Get google authentication
-			HERE>-Get user data and store it in DB, make user available through Session
-		-Facebook
+			+-Get user data and store it in DB, make user available through Session
+		*-Facebook
+			-Get facebook authentication
+			-Get user data and store it in DB, make user available through Session
+			**FB doenst allow auth from http sites, and vagrant's default is http, switching to github auth
+		HERE>-Github
+			-Get Github authentication
+			-Get user data and store it in DB, make user available through Session
+			
 	-Token based authentication
 	-JSON endpoints
 

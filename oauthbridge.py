@@ -20,6 +20,9 @@ def testBridge(*args):
     print(args[0])
     print(args[1])
 
+def getSession():
+    return login_session
+
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
@@ -28,6 +31,8 @@ def showLogin():
 
 def gConnect(req):
     request = req
+    print("In gConnect")
+    print (request)
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state params'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -104,3 +109,17 @@ def gConnect(req):
 
     return login_session
     # return render_template('/index.html', user = login_session['username'])
+
+def fbConnect(req):
+    request = req
+    print("In fbConnect")
+    print(req)
+
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid state params'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    code = request.data
+
+    print("code")
+    print(code)

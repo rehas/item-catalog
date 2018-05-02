@@ -3,10 +3,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from models import User, Item, Category, Base
+from flask import session as login_session
 
 from datetime import datetime
 
 import oauthbridge
+import user_ops
 
 app = Flask(__name__)
 
@@ -22,7 +24,7 @@ def catalog():
     if request.method == 'GET':
         categories = session.query(Category).all()
         latest_items = session.query(Item).order_by(Item.id.desc()).limit(5)
-        return render_template('index.html', categories = categories, latest_items = latest_items, user = request.args.get('user'))
+        return render_template('index.html', categories = categories, latest_items = latest_items, user = login_session['username'])
     if request.method == 'POST':
         newCategory = Category(name = request.form['newCategoryName'])
         session.add(newCategory)
@@ -78,21 +80,33 @@ def deleteSingleItem(category_name, item_name):
         session.commit()
         return redirect(url_for('categoryItems', category_name = category_name))
 
+@app.route('/pick-provider')
+def pickProvider():
+    return render_template('pick-login-provider.html')
 
 @app.route('/login/<string:provider>', methods = ['GET', 'POST'])
 def login(provider):
     if request.method == 'GET':
-        oauthbridge.testBridge(provider, request)
-        state  = oauthbridge.showLogin()
-        return render_template('login.html', STATE = state)
+        if provider == 'google':
+            oauthbridge.testBridge(provider, request)
+            login_session = oauthbridge.getSession()
+            login_session['state']  = oauthbridge.showLogin()
+            return render_template('login-google.html', STATE = login_session['state'])
+        if provider == 'facebook':
+            login_session = oauthbridge.getSession()
+            login_session['state']  = oauthbridge.showLogin()
+            return render_template('login-facebook.html', STATE = login_session['state'])
+            
     if request.method == 'POST':
         if provider == 'google':
             login_session =  oauthbridge.gConnect(request)
             print("here in login/google/post")
             print(login_session)
+            user = user_ops.registerUser(login_session)
             # return "you're trying to login with %s" % provider
-            return redirect( url_for( 'catalog', user = login_session['username']))
+            return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
         if provider == 'facebook':
+            login_session = oauthbridge.fbConnect(request)
             return "you're trying to login with %s" % provider
 
 

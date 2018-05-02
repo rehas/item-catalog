@@ -14,7 +14,13 @@
 <body class="container-fluid">
     <header class="navbar d-flex flex-row">
         <h2 class="nav nav-justified"> Welcome to Item Catalog {{user}} </h2>
-        <button class="btn btn-danger float-right">{{user}} Login</button>
+        <button class="btn btn-danger float-right">
+            {% if user ==None %}
+            <a href='{{url_for('pickProvider')}}'>Login</a>
+            {% else %}
+            <a href='{{url_for('pickProvider')}}'>{{user}} Logout</a>
+            {% endif %}
+        </button>
     </header>
     <div class="row">
         <div class="col-md-4">

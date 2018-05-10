@@ -96,7 +96,18 @@ def login(provider):
             login_session = oauthbridge.getSession()
             login_session['state']  = oauthbridge.showLogin()
             return render_template('login-facebook.html', STATE = login_session['state'])
-            
+        if provider == 'github':
+            print("Github Request Printing")
+            print(request.args.get('code'))
+            if request.args.get('code'):
+                login_session = oauthbridge.ghConnect(request)
+                user = user_ops.registerUser(login_session)
+                return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
+            else:
+                login_session = oauthbridge.getSession()
+                login_session['state'] = oauthbridge.showLogin()
+                return render_template('login-github.html', STATE = login_session['state']) 
+
     if request.method == 'POST':
         if provider == 'google':
             login_session =  oauthbridge.gConnect(request)
@@ -108,7 +119,13 @@ def login(provider):
         if provider == 'facebook':
             login_session = oauthbridge.fbConnect(request)
             return "you're trying to login with %s" % provider
-
+        if provider == 'github':
+            login_session = oauthbridge.ghConnect(request)
+            print ("here in login/github/post")
+            print(login_session)
+            user = user_ops.registerUser(login_session)
+            return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
+            
 
 @app.route('/logout/<string:provider>', methods = ['GET', 'POST'])
 def logout(provider):

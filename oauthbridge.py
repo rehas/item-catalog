@@ -15,6 +15,11 @@ app = Flask(__name__)
 CLIENT_ID = json.loads(
     open('keys/client_secret.json', 'r').read())['web']['client_id']
 
+GHCLIENT_ID = json.loads(
+    open('keys/ghclient_secret.json', 'r').read())['web']['client_id']
+GHCLIENT_SCRT = json.loads(
+    open('keys/ghclient_secret.json', 'r').read())['web']['client_secret']
+
 def testBridge(*args):
     print("We're in oauthbridge.py file")
     print(args[0])
@@ -123,3 +128,47 @@ def fbConnect(req):
 
     print("code")
     print(code)
+
+def ghConnect(req):
+    request = req
+    print("In ghConnect")
+    print(req)
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid state params'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    code = request.args.get('code')
+    print('printing code')
+    print(code)
+
+    print("Code from github is : \n")
+    print(code)
+
+    url = "https://github.com/login/oauth/access_token?\
+client_id=%s&client_secret=%s&code=%s&state=%s" % (GHCLIENT_ID, GHCLIENT_SCRT, code, login_session['state'])
+    print("url is")
+    print(url)
+
+    h = httplib2.Http()
+    # h.headers
+    response, content =  h.request(url, 'POST')
+
+    print("response from GHUB")
+    print(content)
+    print("access token")
+    login_session['access_token'] = content.split('&')[0].replace("access_token=", "")
+    print(login_session['access_token'])
+
+    user_info_url = "https://api.github.com/user?access_token=%s" % login_session['access_token']
+
+    user_data = requests.get(user_info_url).json()
+    print(user_info_url)
+    print("User Info")
+    print(user_data)
+
+    login_session['username'] = user_data['login']
+    login_session['picture'] = user_data['avatar_url']
+    login_session['email'] = user_data['email']
+
+    return login_session
+    

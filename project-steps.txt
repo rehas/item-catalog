@@ -62,11 +62,11 @@ ItemCatalogApp
 			-Get facebook authentication
 			-Get user data and store it in DB, make user available through Session
 			**FB doenst allow auth from http sites, and vagrant's default is http, switching to github auth
-		HERE>-Github
+		-Github
 			-Get Github authentication
 			-Get user data and store it in DB, make user available through Session
 			
-	-Token based authentication
+	HERE>-Token based authentication
 	-JSON endpoints
 
 ------------------------------------------------------------

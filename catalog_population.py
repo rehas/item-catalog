@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import sys
 
 from models import User, Item, Category, Base
 
@@ -11,6 +12,30 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 
 session  = DBSession()
+
+
+# Debug
+def debug():
+
+
+    # debugUser = session.query(User).first()
+    dbgItem = session.query(Item).first()
+    # print(debugUser.name)
+    print(dbgItem.name)
+    
+
+    return
+
+# debug()
+
+# sys.exit("Debug mode : Program exited intentionally")
+
+#Reset Users
+
+if session.query(User).first() is not None:
+    session.query(User).delete()
+    session.commit()
+
 
 # Create User 1
 

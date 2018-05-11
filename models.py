@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -12,6 +13,9 @@ class User(Base):
     name = Column(String(100), nullable = False)
     email = Column(String(100), unique = True)
     picture = Column(String, nullable = True)
+    access_token_google = Column(String, nullable = True)
+    access_token_github = Column(String, nullable = True)
+
 
 class Category(Base):
     __tablename__ =  'category'
@@ -32,5 +36,7 @@ class Item(Base):
     category = relationship(Category)
 
 engine = create_engine('sqlite:///itemCatalog.db')
+
+# User.__table__.drop(engine, checkfirst = True)
 
 Base.metadata.create_all(engine)

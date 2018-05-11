@@ -15,10 +15,10 @@
     <header class="navbar d-flex flex-row">
         <h2 class="nav nav-justified"> Welcome to Item Catalog {{user}} </h2>
         <button class="btn btn-danger float-right">
-            {% if user ==None %}
+            {% if user == "" %}
             <a href='{{url_for('pickProvider')}}'>Login</a>
             {% else %}
-            <a href='{{url_for('pickProvider')}}'>{{user}} Logout</a>
+            <a href='{{url_for('logout')}}'>{{user}} Logout</a>
             {% endif %}
         </button>
     </header>

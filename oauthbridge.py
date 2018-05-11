@@ -28,13 +28,15 @@ def testBridge(*args):
 def getSession():
     return login_session
 
-def showLogin():
+def showLogin(login_session):
+    login_session = login_session
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
-    return login_session['state']
+    return login_session
 
 
-def gConnect(req):
+def gConnect(req, login_session):
+    login_session = login_session
     request = req
     print("In gConnect")
     print (request)
@@ -48,7 +50,7 @@ def gConnect(req):
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to updare auth code'), 401)
+        response = make_response(json.dumps('Failed to update auth code'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     
@@ -104,6 +106,7 @@ def gConnect(req):
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+    
     print("login_session")
     print(login_session)
 
@@ -129,14 +132,18 @@ def fbConnect(req):
     print("code")
     print(code)
 
-def ghConnect(req):
+def ghConnect(req, login_session):
+    login_session = login_session
     request = req
     print("In ghConnect")
     print(req)
+    print(request.args.get('state'))
+    print(login_session['state'])
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state params'), 401)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        print("Error\n %s" %response)
+        return login_session
     code = request.args.get('code')
     print('printing code')
     print(code)
@@ -144,8 +151,8 @@ def ghConnect(req):
     print("Code from github is : \n")
     print(code)
 
-    url = "https://github.com/login/oauth/access_token?\
-client_id=%s&client_secret=%s&code=%s&state=%s" % (GHCLIENT_ID, GHCLIENT_SCRT, code, login_session['state'])
+    url = "https://github.com/login/oauth/access_token?" 
+    url+= "client_id=%s&client_secret=%s&code=%s&state=%s" % (GHCLIENT_ID, GHCLIENT_SCRT, code, login_session['state'])
     print("url is")
     print(url)
 
@@ -156,10 +163,10 @@ client_id=%s&client_secret=%s&code=%s&state=%s" % (GHCLIENT_ID, GHCLIENT_SCRT, c
     print("response from GHUB")
     print(content)
     print("access token")
-    login_session['access_token'] = content.split('&')[0].replace("access_token=", "")
-    print(login_session['access_token'])
+    login_session['access_token_github'] = content.split('&')[0].replace("access_token=", "")
+    print(login_session['access_token_github'])
 
-    user_info_url = "https://api.github.com/user?access_token=%s" % login_session['access_token']
+    user_info_url = "https://api.github.com/user?access_token=%s" % login_session['access_token_github']
 
     user_data = requests.get(user_info_url).json()
     print(user_info_url)
@@ -169,6 +176,18 @@ client_id=%s&client_secret=%s&code=%s&state=%s" % (GHCLIENT_ID, GHCLIENT_SCRT, c
     login_session['username'] = user_data['login']
     login_session['picture'] = user_data['avatar_url']
     login_session['email'] = user_data['email']
+    
 
     return login_session
+
+def disconnect(login_session):
+    ls = login_session
+    print("Disconnecting")
+    for v in ls.keys():
+        print(ls[v])
+        ls[v]  = ""
+
+    print("printing login session after disconnect")
+    print(ls)
+    return ls
     

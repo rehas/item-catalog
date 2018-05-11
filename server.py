@@ -18,12 +18,29 @@ DBSession = sessionmaker(bind = engine)
 session  = DBSession()
 
 
+login_session = {
+    "username" : "",
+    "email" : "",
+    "picture" : "",
+    "access_token" : "",
+    "gplus_id" : "",
+    "state" : "",
+    "access_token_github": ""
+}
+
+
 @app.route('/', methods = ['GET', 'POST'])
 @app.route('/catalog', methods = ['GET', 'POST'])
-def catalog():
+def catalog(user = "", STATE = ""):
     if request.method == 'GET':
         categories = session.query(Category).all()
         latest_items = session.query(Item).order_by(Item.id.desc()).limit(5)
+        global login_session
+        print('In catalog\n\n')
+        print("login session is : \n")
+        print(login_session)
+        print("login_session['username] is : \n")
+        print(login_session['username'])
         return render_template('index.html', categories = categories, latest_items = latest_items, user = login_session['username'])
     if request.method == 'POST':
         newCategory = Category(name = request.form['newCategoryName'])
@@ -39,7 +56,7 @@ def categoryItems(category_name):
         categories = session.query(Category).all()
         selected_category_id = session.query(Category).filter_by(name = category_name).first().id
         category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()        
-        return render_template('category-items.html', categories = categories, category_name = category_name, category_items = category_items)
+        return render_template('category-items.html', categories = categories, category_name = category_name, category_items = category_items, user = login_session['username'])
     if request.method == 'POST':
         category_id_for_item = session.query(Category).filter_by(name = category_name).first().id
         newItem = Item(name = request.form['newItemName'],
@@ -60,7 +77,7 @@ def singleItem(category_name, item_name):
         selected_category_id = session.query(Category).filter_by(name = category_name).first().id
         category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()
         selected_item = session.query(Item).filter_by(name = item_name).first()
-        return render_template('item-detail.html', categories = categories, category_name = category_name, category_items = category_items, item_name = item_name, selected_item = selected_item)        
+        return render_template('item-detail.html', categories = categories, category_name = category_name, category_items = category_items, item_name = item_name, selected_item = selected_item, user = login_session['username'])        
     if request.method == 'POST':
         selected_category_id = session.query(Category).filter_by(name = category_name).first().id
         editItem = session.query(Item).filter_by(category_id = selected_category_id).filter_by(name = item_name).first()
@@ -89,8 +106,9 @@ def login(provider):
     if request.method == 'GET':
         if provider == 'google':
             oauthbridge.testBridge(provider, request)
-            login_session = oauthbridge.getSession()
-            login_session['state']  = oauthbridge.showLogin()
+            # login_session = oauthbridge.getSession()
+            global login_session
+            login_session = oauthbridge.showLogin(login_session)
             return render_template('login-google.html', STATE = login_session['state'])
         if provider == 'facebook':
             login_session = oauthbridge.getSession()
@@ -100,19 +118,26 @@ def login(provider):
             print("Github Request Printing")
             print(request.args.get('code'))
             if request.args.get('code'):
-                login_session = oauthbridge.ghConnect(request)
+                global login_session
+                login_session = oauthbridge.ghConnect(request, login_session)
+                print("login session @ ghconnect after code arrived")
+                print(login_session)
                 user = user_ops.registerUser(login_session)
                 return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
             else:
-                login_session = oauthbridge.getSession()
-                login_session['state'] = oauthbridge.showLogin()
+                #login_session = oauthbridge.getSession()
+                global login_session
+                login_session = oauthbridge.showLogin(login_session)
                 return render_template('login-github.html', STATE = login_session['state']) 
 
     if request.method == 'POST':
         if provider == 'google':
-            login_session =  oauthbridge.gConnect(request)
+            global login_session
+            login_session =  oauthbridge.gConnect(request, login_session)
             print("here in login/google/post")
             print(login_session)
+            print("\n\n\n\n -----------------")
+            print(login_session['username'])
             user = user_ops.registerUser(login_session)
             # return "you're trying to login with %s" % provider
             return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
@@ -120,16 +145,19 @@ def login(provider):
             login_session = oauthbridge.fbConnect(request)
             return "you're trying to login with %s" % provider
         if provider == 'github':
-            login_session = oauthbridge.ghConnect(request)
+            global login_session
+            login_session = oauthbridge.ghConnect(request, login_session)
             print ("here in login/github/post")
             print(login_session)
             user = user_ops.registerUser(login_session)
             return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
             
 
-@app.route('/logout/<string:provider>', methods = ['GET', 'POST'])
-def logout(provider):
-    return "you're logging out from %s" % provider            
+@app.route('/logout')
+def logout():
+    global login_session
+    login_session = oauthbridge.disconnect(login_session)
+    return redirect(url_for('catalog'))            
 
 
 if __name__ == '__main__':

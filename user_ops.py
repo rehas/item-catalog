@@ -13,16 +13,27 @@ DBSession = sessionmaker(bind = engine)
 session  = DBSession()
 
 def registerUser(login_session):
-    email = login_session['email']
+    ls = login_session
+    print("in registerUser")
+    print(ls)
+    email = ls['email']
     existingUser = session.query(User).filter_by(email = email).first()
     if existingUser is not None:
         print("User already in DB => %s") % existingUser.name
         return existingUser
     else:
         newUser = User(email = email)
-        newUser.name    = login_session['username']
-        newUser.picture = login_session['picture'] 
-        newUser.picture = login_session['email']
+        newUser.name    = ls['username']
+        newUser.picture = ls['picture'] 
+
+        if login_session['access_token'] :
+            newUser.access_token_google = ls['access_token']
+        elif login_session['access_token_github'] :
+            newUser.access_token_github =  ls['access_token_github']
+        else: 
+            print("No Access token from SignIn attempt found!")
+            
+
         session.add(newUser)
         session.commit()
         print("New User succesfully added to DB")

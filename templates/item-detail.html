@@ -13,7 +13,14 @@
 <body class="container-fluid">
         <header class="navbar d-flex flex-row">
             <h2 class="nav nav-justified"> Displaying Item Detail for {{item_name}} </h2>
-            <button class="btn btn-danger float-right">Login</button>
+            <!-- <button class="btn btn-danger float-right">Login</button> -->
+            <button class="btn btn-danger float-right">
+                {% if user == "" %}
+                <a href='{{url_for('pickProvider')}}'>Login</a>
+                {% else %}
+                <a href='{{url_for('logout')}}'>{{user}} Logout</a>
+                {% endif %}
+            </button>
         </header>
         <div class="row">
             <div class = "col-md-4"> 

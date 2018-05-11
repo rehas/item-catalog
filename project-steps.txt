@@ -69,13 +69,16 @@ ItemCatalogApp
 			
 	+-Token based authentication
 	+-Logout from providers
-	HERE>-JSON endpoints
+	+-JSON endpoints
 
 ------------------------------------------------------------
 5-Phase 3
-	-Beautify css & html
+	+-Show Create / Edit / Delete only if the user is logged in and the item is created by user
+	HERE>-Beautify css & html
 	-Refactor serverside, with comments
 	-pypchecker
+	-Cross-Site Request Forgery protection via state in all Create, Update and Delete operations
+	-@login required atribute
 
 ------------------------------------------------------------	
 DB model

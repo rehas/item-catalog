@@ -65,9 +65,11 @@ ItemCatalogApp
 		-Github
 			-Get Github authentication
 			-Get user data and store it in DB, make user available through Session
+		**TODO : Clear up the unnecessary method implementations
 			
-	HERE>-Token based authentication
-	-JSON endpoints
+	+-Token based authentication
+	+-Logout from providers
+	HERE>-JSON endpoints
 
 ------------------------------------------------------------
 5-Phase 3
@@ -94,4 +96,6 @@ User:
 	id : int ->PK
 	name : String 
 	email : string -> unique
-	picture : string 
+	picture : string
+	access_token_google : string
+	access_token_github : string 	

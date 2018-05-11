@@ -74,7 +74,8 @@ ItemCatalogApp
 ------------------------------------------------------------
 5-Phase 3
 	+-Show Create / Edit / Delete only if the user is logged in and the item is created by user
-	HERE>-Beautify css & html
+	+-Beautify css & html
+		HERE>-Fix edit form bugs control on server side, if empty form comes, do nothing
 	-Refactor serverside, with comments
 	-pypchecker
 	-Cross-Site Request Forgery protection via state in all Create, Update and Delete operations

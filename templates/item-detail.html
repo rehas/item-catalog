@@ -82,10 +82,15 @@
                         <form class="form-control" action='{{url_for('singleItem', category_name = category_name, item_name = selected_item.name)}}' method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <!-- <label for="itemName">Edit Item</label> -->
-                                <input required class="form-control" type="text" id="itemName" placeholder="Enter New Item Name for {{selected_item.name}}" name="editItemName">
+                                <input required class="form-control" type="text" id="itemName" 
+                                placeholder="Enter New Item Name for {{selected_item.name}}" name="editItemName"
+                                value="{{selected_item.name}}">
                                 <br>
                                 <!-- <label for="itemDescription">Edit Description</label> -->
-                                <input class="form-control" type="text" id="itemDescription" placeholder="Enter New Item Description for {{selected_item.description}}" name="editItemDescription">
+                                <input required class="form-control" type="text" id="itemDescription" 
+                                placeholder="Enter New Item Description for {{selected_item.description}}" 
+                                name="editItemDescription" 
+                                value="{{selected_item.description}}">
                                 <button class="form-control" type="submit" class="btn btn-primary">Edit this Item!</button>
                             </div>
                         </form>
@@ -99,7 +104,8 @@
                     {% endif %}            
                         <form action='{{url_for('deleteSingleItem', category_name = category_name,  item_name = selected_item.name )}}' method="POST">
                             <label for="deleteItem">You want to delete item : {{selected_item.name}} ?</label>
-                            <button type="submit" class="btn btn-danger"> DELETE ITEM {{selected_item.name}}</button>
+                            <br>
+                            <button type="submit" class="btn btn-danger btn-block"> DELETE ITEM {{selected_item.name}}</button>
                         </form>
                         </div>
                         </div>

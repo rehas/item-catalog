@@ -15,20 +15,30 @@
 </head>
 
 <body class="container-fluid">
-    <header class="navbar d-flex flex-row">
-        <h2 class="nav nav-justified"> Welcome to Item Catalog {{user}} </h2>
-        <button class="btn btn-danger float-right">
-            {% if user == "" %}
-            <a href='{{url_for('pickProvider')}}'>Login</a>
-            {% else %}
-            <a href='{{url_for('logout')}}'>{{user}} Logout</a>
-            {% endif %}
-        </button>
+    <header class="">
+        <div class="row">
+            <div class="col-sm-10">
+                <p class="text-center display-3"> Welcome to Item Catalog </p>
+            </div>
+            <div class="login col-sm-2 pull-right">
+                <button class="btn btn-danger btn-block float-right">
+                    {% if user == "" %}
+                    <a href='{{url_for('pickProvider')}}'>Login <br> For extras </a>
+                    {% else %}
+                    <a href='{{url_for('logout')}}'> Logout <br> {{user}} </a>
+                    {% endif %}
+                </button>
+            </div>
+    </div>
     </header>
+    <hr>
+
+
     <div class="row">
         <div class="col-md-4">
             
-            <h2>Categories </h2>
+            <p class="section-header display-4">Categories </p>
+            <hr>
             {% for c in categories%}
                 <div class="row">
                 <a href='{{url_for('categoryItems', category_name = c.name)}}' 
@@ -41,26 +51,33 @@
             {% endfor %}
         </div>
         <div class="col-md-4">
-            <h2>Latest Items</h2>
+            <p class="section-header display-4">Latest Items</p>
+            <hr>
             {% for li in latest_items%}
             <h4>{{li.name}} - {{li.last_edit}} -- {{li.category.name}}</h4>
             {% endfor %}
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-4 ">
+            <p class="section-header display-4">Category Operations</p>
+            <hr>
+            {% if user == "" %}
+                <div class = "row justify-content-center f-group" style="display:none">
+            {% else %}
+                <div class = "row justify-content-center f-group" >
+            {% endif %}    
+                <form class="" action='{{url_for('catalog')}}' method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="categoryName">Add New Category</label>
+                        <br>
+                        <input type="text" id="categoryName" placeholder="Enter New Category Name" name="newCategoryName">
+                        <br>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Category!</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    {% if user == "" %}
-        <div class = "row" style="display:none">
-    {% else %}
-        <div class = "row" >
-    {% endif %}    
+        
     
-        <form class="form-inline" action='{{url_for('catalog')}}' method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="categoryName">Add New Category</label>
-                <input type="text" id="categoryName" placeholder="Enter New Category Name" name="newCategoryName">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Category!</button>
-        </form>
-    </div>
 </body>

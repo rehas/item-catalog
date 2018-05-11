@@ -12,20 +12,28 @@
 </head>
 
 <body class="container-fluid">
-    <header class="navbar d-flex flex-row">
-        <h2 class="nav nav-justified"> Displaying Category {{category_name}} </h2>
-        <!-- <button class="btn btn-danger float-right">Login</button> -->
-        <button class="btn btn-danger float-right">
-            {% if user == "" %}
-            <a href='{{url_for('pickProvider')}}'>Login</a>
-            {% else %}
-            <a href='{{url_for('logout')}}'>{{user}} Logout</a>
-            {% endif %}
-        </button>
+    <header class="">
+        <div class="row">
+            <div class="col-sm-10">
+            <p class="text-center display-3"> Displaying Category {{category_name}} </p>
+            <!-- <button class="btn btn-danger float-right">Login</button> -->
+            </div>
+            <div class="login col-sm-2 pull-right">
+                <button class="btn btn-danger btn-block float-right">
+                    {% if user == "" %}
+                    <a href='{{url_for('pickProvider')}}'>Login <br> For extras</a>
+                    {% else %}
+                    <a href='{{url_for('logout')}}'>{{user}} Logout</a>
+                    {% endif %}
+                </button>
+            </div>
+        </div>
     </header>
+    <hr>
     <div class="row">
         <div class="col-md-4">
-            <h2>Categories</h2> 
+            <p class="display-4 section-header">Categories</p>
+            <hr> 
             {% for c in categories%}
             <div class="row">
             {% if category_name == c. name%}
@@ -43,7 +51,8 @@
             {% endfor %}
         </div>
         <div class="col-md-4"> 
-            <h2>Items for category {{category_name}}</h2>
+            <p class="display-4 section-header">Items for {{category_name}}</p>
+            <hr>
             {% for ci in category_items%}
             <div class="row">
                 <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
@@ -54,22 +63,30 @@
             {% endfor %}
         
         </div>
-    </div>
+        <div class="col-md-4 ">
+            <p class="section-header display-4">Add New Item</p>
+            <hr>
+            {% if user == "" %}
+                <div class="row justify-content-center f-group" style="display:none">
+                <p>You need to log in to add new items!</p>    
+            {% else %}
+                <div class="row justify-content-center f-group">
+            {% endif %}
+                <form class="form" action='{{url_for('categoryItems', category_name = category_name)}}' method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="itemName">Enter Item Name</label>
+                            <br>
+                            <input type="text" id="itemName" placeholder="Enter New Item Name" name="newItemName">
+                            <br>
+                            <label for="itemDescription">Enter Description</label>
+                            <br>
+                            <input type="text" id="itemDescription" placeholder="Enter Item Description" name="newItemDescription">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add New Item!</button>
+                    </form>
+                </div>
+        </div>
 
     <!-- <div class = "row"> -->
-    {% if user == "" %}
-        <div class="row" style="display:none">
-    {% else %}
-        <div class="row">
-    {% endif %}
-        <form class="form" action='{{url_for('categoryItems', category_name = category_name)}}' method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="itemName">Add New Item</label>
-                    <input type="text" id="itemName" placeholder="Enter New Item Name" name="newItemName">
-                    <label for="itemDescription">Enter Description</label>
-                    <input type="text" id="itemDescription" placeholder="Enter Item Description" name="newItemDescription">
-                </div>
-                <button type="submit" class="btn btn-primary">Add New Item!</button>
-            </form>
-        </div>
+    
 </body>

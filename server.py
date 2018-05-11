@@ -22,6 +22,7 @@ login_session = {
     "username" : "",
     "email" : "",
     "picture" : "",
+    "user_id" : "",
     "access_token" : "",
     "gplus_id" : "",
     "state" : "",
@@ -41,7 +42,11 @@ def catalog(user = "", STATE = ""):
         print(login_session)
         print("login_session['username] is : \n")
         print(login_session['username'])
-        return render_template('index.html', categories = categories, latest_items = latest_items, user = login_session['username'])
+        return render_template('index.html', \
+            categories = categories, \
+            latest_items = latest_items, \
+            user = login_session['username'],\
+            userID = login_session['user_id'] )
     if request.method == 'POST':
         newCategory = Category(name = request.form['newCategoryName'])
         session.add(newCategory)
@@ -56,13 +61,19 @@ def categoryItems(category_name):
         categories = session.query(Category).all()
         selected_category_id = session.query(Category).filter_by(name = category_name).first().id
         category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()        
-        return render_template('category-items.html', categories = categories, category_name = category_name, category_items = category_items, user = login_session['username'])
+        return render_template('category-items.html', \
+            categories = categories, \
+            category_name = category_name, \
+            category_items = category_items, \
+            user = login_session['username'],\
+            userID = login_session['user_id'])
     if request.method == 'POST':
         category_id_for_item = session.query(Category).filter_by(name = category_name).first().id
         newItem = Item(name = request.form['newItemName'],
         description = request.form['newItemDescription'])
         newItem.category_id = category_id_for_item
-        newItem.created_by = 1 # TODO : make it the actual signed in user
+        userId = session.query(User).filter_by(email = login_session['email']).first().id
+        newItem.created_by = userId # TODO : make it the actual signed in user
         newItem.last_edit = datetime.now()
         session.add(newItem)
         session.commit()
@@ -77,7 +88,14 @@ def singleItem(category_name, item_name):
         selected_category_id = session.query(Category).filter_by(name = category_name).first().id
         category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()
         selected_item = session.query(Item).filter_by(name = item_name).first()
-        return render_template('item-detail.html', categories = categories, category_name = category_name, category_items = category_items, item_name = item_name, selected_item = selected_item, user = login_session['username'])        
+        return render_template('item-detail.html', \
+        categories = categories, \
+        category_name = category_name, \
+        category_items = category_items, \
+        item_name = item_name, \
+        selected_item = selected_item, \
+        user = login_session['username'],\
+        userID = login_session['user_id'])        
     if request.method == 'POST':
         selected_category_id = session.query(Category).filter_by(name = category_name).first().id
         editItem = session.query(Item).filter_by(category_id = selected_category_id).filter_by(name = item_name).first()
@@ -123,6 +141,7 @@ def login(provider):
                 print("login session @ ghconnect after code arrived")
                 print(login_session)
                 user = user_ops.registerUser(login_session)
+                login_session['user_id'] = user.id
                 return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
             else:
                 #login_session = oauthbridge.getSession()
@@ -139,6 +158,7 @@ def login(provider):
             print("\n\n\n\n -----------------")
             print(login_session['username'])
             user = user_ops.registerUser(login_session)
+            login_session['user_id'] = user.id
             # return "you're trying to login with %s" % provider
             return redirect( url_for( 'catalog', user = login_session['username'], STATE = login_session['state']))
         if provider == 'facebook':
@@ -158,6 +178,18 @@ def logout():
     global login_session
     login_session = oauthbridge.disconnect(login_session)
     return redirect(url_for('catalog'))            
+
+
+@app.route('/catalog/JSON')
+def catalogJSON():
+    catalog = session.query(Category).all()
+    return jsonify(category = [c.serialize for c in catalog])
+
+@app.route('/catalog/<string:category_name>/JSON')
+def categoryItemsJSON(category_name):
+        selected_category_id = session.query(Category).filter_by(name = category_name).first().id
+        category_items = session.query(Item).filter_by(category_id = selected_category_id).order_by(Item.name).all()        
+        return jsonify(categoryItem = [ci.serialize for ci in category_items])
 
 
 if __name__ == '__main__':

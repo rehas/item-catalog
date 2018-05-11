@@ -55,8 +55,14 @@
         
         </div>
     </div>
-    <div class = "row">
-            <form class="form" action='{{url_for('categoryItems', category_name = category_name)}}' method="POST" enctype="multipart/form-data">
+
+    <!-- <div class = "row"> -->
+    {% if user == "" %}
+        <div class="row" style="display:none">
+    {% else %}
+        <div class="row">
+    {% endif %}
+        <form class="form" action='{{url_for('categoryItems', category_name = category_name)}}' method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="itemName">Add New Item</label>
                     <input type="text" id="itemName" placeholder="Enter New Item Name" name="newItemName">

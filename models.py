@@ -15,6 +15,15 @@ class User(Base):
     picture = Column(String, nullable = True)
     access_token_google = Column(String, nullable = True)
     access_token_github = Column(String, nullable = True)
+    @property
+    def serialize(self):
+        return {
+            'id' : self.id ,
+            'name' : self.name ,
+            'email' : self.email ,
+            'picture' : self.picture
+        }
+    
 
 
 class Category(Base):
@@ -22,6 +31,12 @@ class Category(Base):
 
     id = Column(Integer, primary_key = True)
     name = Column(String(100), unique = True)
+    @property
+    def serialize(self):
+        return{
+            'id': self.id,
+            'name' : self.name
+        }
 
 class Item(Base):
     __tablename__ = 'item'
@@ -34,6 +49,16 @@ class Item(Base):
     category_id = Column(Integer, ForeignKey('category.id'))
     user = relationship(User)
     category = relationship(Category)
+    @property
+    def serialize(self):
+        return{
+            'id' : self.id,
+            'name' : self.name,
+            'description' : self.description,
+            'last_edit' : self.last_edit,
+            'created_by' : self.created_by,
+            'category_id' : self.category_id
+        }
 
 engine = create_engine('sqlite:///itemCatalog.db')
 

@@ -66,7 +66,13 @@
                 <h3>{{selected_item.description}}</h3>
             </div>
         </div>
-        <div class = "row">
+
+        <!-- <div class = "row"> -->
+        {% if (user == "") or (userID != selected_item.created_by) %}
+            <div class = "row" style="display:none">
+        {% else %}
+            <div class = "row" >
+        {% endif %}    
                 <form class="form" action='{{url_for('singleItem', category_name = category_name, item_name = selected_item.name)}}' method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="itemName">Edit Item</label>
@@ -77,7 +83,13 @@
                     <button type="submit" class="btn btn-primary">Edit this Item!</button>
                 </form>
             </div>
-        <div class="row">
+
+        <!-- <div class="row"> -->
+        {% if (user == "") or (userID != selected_item.created_by) %}
+            <div class = "row" style="display:none">
+        {% else %}
+            <div class = "row" >
+        {% endif %}            
             <form action='{{url_for('deleteSingleItem', category_name = category_name,  item_name = selected_item.name )}}' method="POST">
                 <label for="deleteItem">You want to delete item : {{selected_item.name}} ?</label>
                 <button type="submit" class="btn btn-danger"> DELETE ITEM {{selected_item.name}}</button>

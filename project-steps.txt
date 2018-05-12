@@ -77,11 +77,16 @@ ItemCatalogApp
 	+-Beautify css & html
 		+-Fix edit form bugs control on server side, if empty form comes, do nothing
 	+-pypchecker
-	HERE>-Explain serverside, with comments
-	-@login required atribute, before that try adding with postman.
-	-Cross-Site Request Forgery protection via state in all Create, Update and Delete operations
+	+check if user exists b4 crud on serverside, before that try adding with postman.
+	+-Explain serverside, with comments
+	+-Cross-Site Request Forgery protection via state in all Create, Update and Delete operations
 
-------------------------------------------------------------	
+------------------------------------------------------------
+6-Phase 4
+	HERE>-Clear html / css
+	-Clear page hops on signin w google
+	-Clear page hops on signin w github
+
 DB model
 
 Category:

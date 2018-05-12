@@ -74,8 +74,14 @@ def categoryItems(category_name):
             name=request.form['newItemName'],
             description=request.form['newItemDescription'])
         newItem.category_id = category_id_for_item
-        userId = session.query(
-            User).filter_by(email=login_session['email']).first().id
+        try:
+            user = session.query(
+                User).filter_by(email=login_session['email']).first()
+            userId = user.id
+        except AttributeError, e:
+            print(e)
+            return redirect(url_for('pickProvider'))
+        print("userID is : %s") % userId
         newItem.created_by = userId  # DONE : make it the actual signed in user
         newItem.last_edit = datetime.now()
         session.add(newItem)
@@ -111,6 +117,16 @@ def singleItem(category_name, item_name):
             Item).filter_by(
                 category_id=selected_category_id).filter_by(
                 name=item_name).first()
+        try:
+            user = session.query(
+                User).filter_by(email=login_session['email']).first()
+            userId = user.id
+        except AttributeError, e:
+            print(e)
+            return redirect(url_for('pickProvider'))
+        if user.id != editItem.created_by:
+            return redirect(url_for('logout'))
+
         editItem.name = request.form['editItemName']
         editItem.description = request.form['editItemDescription']
         session.add(editItem)
@@ -122,7 +138,16 @@ def singleItem(category_name, item_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>/delete',
            methods=['POST'])
 def deleteSingleItem(category_name, item_name):
+    try:
+        user = session.query(
+                User).filter_by(email=login_session['email']).first()
+        userId = user.id
+    except AttributeError, e:
+        print(e)
+        return redirect(url_for('pickProvider'))
     deleteItem = session.query(Item).filter_by(name=item_name).first()
+    if user.id != deleteItem.created_by:
+        return redirect(url_for('logout'))
     session.delete(deleteItem)
     session.commit()
     return redirect(url_for('categoryItems', category_name=category_name))

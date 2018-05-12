@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<head>
+    <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,10 +12,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     
     <script src="/static/app.js"></script>
-</head>
+    </head>
 
-<body class="container-fluid">
-    <header class="">
+    <body class="container-fluid">
+        <header class="">
         <div class="row">
             <div class="col-sm-10">
                 <p class="text-center display-3"> Welcome to Item Catalog </p>
@@ -30,12 +30,11 @@
                 </button>
             </div>
     </div>
-    </header>
-    <hr>
+        </header>
+        <hr>
 
-
-    <div class="row">
-        <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-4">
             
             <p class="section-header display-4">Categories </p>
             <hr>
@@ -49,15 +48,15 @@
 
                 </div>
             {% endfor %}
-        </div>
-        <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
             <p class="section-header display-4">Latest Items</p>
             <hr>
             {% for li in latest_items%}
             <h4>{{li.name}} - {{li.last_edit}} -- {{li.category.name}}</h4>
             {% endfor %}
-        </div>
-        <div class="col-md-4 ">
+            </div>
+            <div class="col-md-4 ">
             <p class="section-header display-4">Category Operations</p>
             <hr>
             {% if user == "" %}
@@ -76,8 +75,6 @@
                 </form>
             </div>
         </div>
-    </div>
-
-        
-    
-</body>
+        </div>
+    </body>
+</html>

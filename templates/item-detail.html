@@ -1,16 +1,15 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Item Catalog</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/main.css">
+    </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Item Catalog</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <link rel="stylesheet" href="/static/main.css">
-</head>
-
-<body class="container-fluid">
+    <body class="container-fluid">
         <header class="">
             <div class="row">
                 <div class="col-md-10">
@@ -33,7 +32,6 @@
             <div class = "col-md-4"> 
                     <p class="section-header display-4">Categories </p>
                     <hr>
-                 
             {% for c in categories%}
             <div class="row">
             {% if category_name == c. name%}
@@ -52,22 +50,22 @@
             </div>
             <div class = "col-md-4"> 
                 <p class="display-4 section-header">Items for {{category_name}}</p>
-            <hr>
-            {% for ci in category_items%}
-            <div class="row">
-                {% if item_name == ci.name%}
-                <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
-                class="btn btn-primary">
-                    <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
-                 </a>
-                {% else%}
-                <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
-                class="btn btn-default">
-                    <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
-                 </a>
-                {% endif %}
-            </div>
-            {% endfor %}
+                <hr>
+                {% for ci in category_items%}
+                <div class="row">
+                    {% if item_name == ci.name%}
+                    <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
+                    class="btn btn-primary">
+                        <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
+                     </a>
+                    {% else%}
+                    <a href='{{url_for('singleItem', category_name = category_name, item_name = ci.name)}}'
+                    class="btn btn-default">
+                        <h4 class="col">{{ci.name}} - {{ci.last_edit}}</h4>
+                     </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
             <div class = "col-md-4"> 
                 <p class="display-4 h2">Details: {{item_name}}</p>
@@ -110,7 +108,7 @@
                         </div>
                         </div>
                 </div>
-
-        <!-- <div class = "row"> -->
-        
-</body>
+            </div>
+        </div>
+    </body>
+</html>

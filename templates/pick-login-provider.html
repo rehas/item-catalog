@@ -1,8 +1,6 @@
 <!doctype html>
-
 <html lang="en">
-
-<head>
+    <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,9 +8,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/static/main.css">
-</head>
-
-<body class="container">
+    </head>
+    <body class="container">
     <br>
     <div class="row">
         <a class="btn btn-block btn-primary" href='{{url_for('login', provider = 'google')}}' role="button">Sign In With Google</a>
@@ -21,4 +18,5 @@
     <div class="row">
         <a class="btn btn-block btn-primary" href='{{url_for('login', provider = 'github')}}' role="button">Sign In With GitHub</a>
     </div>
-</body>
+    </body>
+</html>

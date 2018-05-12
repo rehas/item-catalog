@@ -29,3 +29,10 @@ button a:hover{
 input{
     width: max-content;
 }
+.github{
+    margin-top: 25%;
+}
+.google{
+    padding: 100px;
+    margin: 100px;
+}

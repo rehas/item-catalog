@@ -187,7 +187,6 @@ def pickProvider():
 def login(provider):
     if request.method == 'GET':
         if provider == 'google':
-            oauthbridge.testBridge(provider, request)
             global login_session
             login_session = oauthbridge.showLogin(login_session)
             return render_template('login-google.html',

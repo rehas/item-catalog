@@ -83,10 +83,8 @@ ItemCatalogApp
 
 ------------------------------------------------------------
 6-Phase 4
-	HERE>-Clear html / css
-	-Clear page hops on signin w google
-	-Clear page hops on signin w github
-
+	+-Clear html / css
+	HERE>-Write Readme
 DB model
 
 Category:

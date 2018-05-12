@@ -188,7 +188,6 @@ def login(provider):
     if request.method == 'GET':
         if provider == 'google':
             oauthbridge.testBridge(provider, request)
-            # login_session = oauthbridge.getSession()
             global login_session
             login_session = oauthbridge.showLogin(login_session)
             return render_template('login-google.html',
@@ -208,7 +207,6 @@ def login(provider):
                     user=login_session['username'],
                     STATE=login_session['state']))
             else:
-                # login_session = oauthbridge.getSession()
                 global login_session
                 login_session = oauthbridge.showLogin(login_session)
                 return render_template('login-github.html',

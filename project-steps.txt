@@ -76,10 +76,10 @@ ItemCatalogApp
 	+-Show Create / Edit / Delete only if the user is logged in and the item is created by user
 	+-Beautify css & html
 		+-Fix edit form bugs control on server side, if empty form comes, do nothing
-	HERE>-Refactor serverside, with comments
-	-pypchecker
+	+-pypchecker
+	HERE>-Explain serverside, with comments
+	-@login required atribute, before that try adding with postman.
 	-Cross-Site Request Forgery protection via state in all Create, Update and Delete operations
-	-@login required atribute
 
 ------------------------------------------------------------	
 DB model

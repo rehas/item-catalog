@@ -119,21 +119,6 @@ def gConnect(req, login_session):
     # return render_template('/index.html', user = login_session['username'])
 
 
-def fbConnect(req):
-    request = req
-    print("In fbConnect")
-    print(req)
-
-    if request.args.get('state') != login_session['state']:
-        response = make_response(json.dumps('Invalid state params'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    code = request.data
-
-    print("code")
-    print(code)
-
-
 def ghConnect(req, login_session):
     login_session = login_session
     request = req

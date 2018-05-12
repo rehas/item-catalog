@@ -33,6 +33,10 @@ login_session = {
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/catalog', methods=['GET', 'POST'])
 def catalog(user="", STATE=""):
+    """
+    Main page to display available categories and latest items
+    Adding new categories requires user login.
+    """
     if request.method == 'GET':
         categories = session.query(Category).all()
         latest_items = session.query(Item).order_by(Item.id.desc()).limit(5)
@@ -46,6 +50,13 @@ def catalog(user="", STATE=""):
             'index.html', categories=categories, latest_items=latest_items,
             user=login_session['username'], userID=login_session['user_id'])
     if request.method == 'POST':
+        try:
+            user = session.query(
+                User).filter_by(email=login_session['email']).first()
+            userId = user.id
+        except AttributeError, e:
+            print(e)
+            return redirect(url_for('pickProvider'))
         newCategory = Category(name=request.form['newCategoryName'])
         session.add(newCategory)
         session.commit()
@@ -54,6 +65,10 @@ def catalog(user="", STATE=""):
 
 @app.route('/catalog/<string:category_name>/items', methods=['GET', 'POST'])
 def categoryItems(category_name):
+    """
+    Displays Items for a selected category
+    Adding new Items requires user login
+    """
     if request.method == 'GET':
         categories = session.query(Category).all()
         selected_category_id = session.query(
@@ -94,6 +109,11 @@ def categoryItems(category_name):
     '/catalog/<string:category_name>/<string:item_name>',
     methods=['GET', 'POST'])
 def singleItem(category_name, item_name):
+    """
+    Displays Item details for a selected item
+    Editing items requires both login, and the item must have been created by
+    the user trying to edit
+    """
     if request.method == 'GET':
         categories = session.query(Category).all()
         selected_category_id = session.query(
@@ -138,6 +158,11 @@ def singleItem(category_name, item_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>/delete',
            methods=['POST'])
 def deleteSingleItem(category_name, item_name):
+    """
+    Deletes selected item
+    Deleting items requires user login and the item must have been created by
+    the user trying to delete
+    """
     try:
         user = session.query(
                 User).filter_by(email=login_session['email']).first()
@@ -167,11 +192,6 @@ def login(provider):
             global login_session
             login_session = oauthbridge.showLogin(login_session)
             return render_template('login-google.html',
-                                   STATE=login_session['state'])
-        if provider == 'facebook':
-            login_session = oauthbridge.getSession()
-            login_session['state'] = oauthbridge.showLogin()
-            return render_template('login-facebook.html',
                                    STATE=login_session['state'])
         if provider == 'github':
             print("Github Request Printing")
@@ -208,9 +228,6 @@ def login(provider):
                 'catalog',
                 user=login_session['username'],
                 STATE=login_session['state']))
-        if provider == 'facebook':
-            login_session = oauthbridge.fbConnect(request)
-            return "you're trying to login with %s" % provider
         if provider == 'github':
             global login_session
             login_session = oauthbridge.ghConnect(request, login_session)

@@ -60,7 +60,9 @@
             <p class="section-header display-4">Latest Items</p>
             <hr>
             {% for li in latest_items%}
-            <h4>{{li.name}} - {{li.last_edit}} -- {{li.category.name}}</h4>
+            <h4>
+                <b>{{li.name}}</b> - {{li.last_edit.strftime('%b-%d  %H:%M')}} -- <i>( {{li.category.name}} )</i>
+            </h4>
             {% endfor %}
             </div>
             <div class="col-md-4 ">

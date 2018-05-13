@@ -12,7 +12,14 @@
     <body class="container-fluid">
         <header class="">
             <div class="row">
-                <div class="col-md-10">
+                    <div class="com-sm-1 login home">
+                            <button class="btn btn-primary">
+                            <a href='{{url_for('catalog')}}'>
+                                Home
+                            </a>
+                        </button>
+                        </div>
+                <div class="col-md-9">
                     <p class="text-center display-3"> Displaying Item Detail for {{item_name}} </p>
                     <!-- <button class="btn btn-danger float-right">Login</button> -->
                 </div>

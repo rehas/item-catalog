@@ -12,7 +12,7 @@ button a:hover{
     text-decoration: none;
 }
 
-.login{
+.login,.home{
     margin-top: 1em;
 }
 
@@ -35,4 +35,7 @@ input{
 .google{
     padding: 100px;
     margin: 100px;
+}
+.home{
+    margin-left: 1em;
 }
